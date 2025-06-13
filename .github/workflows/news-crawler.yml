@@ -3,7 +3,7 @@ name: Auto News Crawler
 on:
   workflow_dispatch:
   schedule:
-  - cron: '*/5 * * * *'  # Setiap 15 menit
+  - cron: '*/15 * * * *'  # Setiap 15 menit
 
 jobs:
   build:
