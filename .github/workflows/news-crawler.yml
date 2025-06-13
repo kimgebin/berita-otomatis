@@ -1,23 +1,26 @@
 name: Auto News Crawler
-
 on:
-  workflow_dispatch:
   schedule:
-  - cron: '*/15 * * * *'  # Setiap 15 menit
+    - cron: '*/15 * * * *'  # Jalankan setiap jam
+  workflow_dispatch:
 
 jobs:
-  build:
+  run-bot:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-python@v4
         with:
           python-version: '3.10'
       - run: pip install -r requirements.txt
-      - run: python news_bot.py
-      - run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add berita/
-          git commit -m "📰 Update berita $(date +'%F %T')" || echo "Nothing to commit"
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
+      - name: Run Bot
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python news_bot.py
+      - name: Push Changes
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          git add berita.json
+          git commit -m "Auto-update berita [skip ci]"
+          git push
