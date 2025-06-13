@@ -39,14 +39,10 @@ def fetch_headline(site_name, url):
         print(f"Gagal fetch dari {site_name}: {e}")
         return None
 
-def generate_article(data):
-    template_path = "templates/artikel_template.md"
-    with open(template_path, "r") as f:
+def generate_markdown(data, slug, today):
+    md_template_path = "templates/artikel_template.md"
+    with open(md_template_path, "r") as f:
         template = Template(f.read())
-
-    today = datetime.now().strftime("%Y-%m-%d")
-    slug = data['title'].lower().replace(" ", "-")[:50]
-    filename = f"berita/{today}-{slug}.md"
 
     output = template.render(
         title=data["title"],
@@ -58,13 +54,40 @@ def generate_article(data):
         summary=f"Berikut adalah ringkasan berita dari {data['source'].capitalize()}."
     )
 
-    with open(filename, "w") as f:
+    md_path = f"berita/{today}-{slug}.md"
+    with open(md_path, "w") as f:
         f.write(output)
-    print(f"✅ Artikel dibuat: {filename}")
+    print(f"✅ Artikel markdown dibuat: {md_path}")
+
+def generate_html(data, slug, today):
+    html_template = f"""<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>{data['title']}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <h1>{data['title']}</h1>
+  <p><em>{today} · {data['source'].capitalize()}</em></p>
+  <img src="https://via.placeholder.com/1200x675?text=Berita+Otomatis" alt="Gambar Berita" style="width:100%">
+  <p>Berikut adalah ringkasan berita dari {data['source'].capitalize()}.</p>
+  <p><a href="{data['url']}" target="_blank">➡️ Baca selengkapnya</a></p>
+</body>
+</html>"""
+
+    html_path = f"berita/{today}-{slug}.html"
+    with open(html_path, "w") as f:
+        f.write(html_template.strip())
+    print(f"✅ Artikel HTML dibuat: {html_path}")
 
 if __name__ == "__main__":
     os.makedirs("berita", exist_ok=True)
+    today = datetime.now().strftime("%Y-%m-%d")
+
     for name, url in SOURCES.items():
         result = fetch_headline(name, url)
         if result:
-            generate_article(result)
+            slug = result['title'].lower().replace(" ", "-")[:50]
+            generate_markdown(result, slug, today)
+            generate_html(result, slug, today)
