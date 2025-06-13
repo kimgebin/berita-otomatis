@@ -14,7 +14,8 @@ def rewrite_article(original_text):
                 },
                 {
                     "role": "user",
-                    "content": f"Tulis ulang berita berikut agar lebih ringkas, natural, dan netral:
+                    "content": f"""Tulis ulang berita berikut agar lebih ringkas, natural, dan netral:
+                    {text}"""
 
 {original_text}"
                 }
