@@ -1,0 +1,10 @@
+{
+  "max_articles": 50,
+  "ui_settings": {
+    "card_style": "discover",
+    "dark_mode": false
+  },
+  "rss_feeds": [
+    "https://www.bbc.com/indonesia/index.xml"
+  ]
+}

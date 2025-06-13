@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -6,62 +5,207 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Berita Otomatis</title>
   <style>
+    :root {
+      --primary-color: #1a73e8;
+      --card-border-radius: 12px;
+      --card-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+      --font-family: 'Google Sans', Roboto, Arial, sans-serif;
+    }
+    
     body {
-      font-family: 'Helvetica Neue', sans-serif;
+      font-family: var(--font-family);
       margin: 0;
-      background: #f7f7f7;
-      color: #222;
+      padding: 0;
+      background: #f8f9fa;
+      color: #202124;
     }
+    
     header {
-      background: #ffffff;
-      padding: 1rem 1.5rem;
+      position: sticky;
+      top: 0;
+      background: white;
+      padding: 12px 16px;
+      font-size: 1.25rem;
+      font-weight: 500;
+      box-shadow: 0 1px 2px 0 rgba(0,0,0,0.1);
+      z-index: 10;
+      display: flex;
+      align-items: center;
+    }
+    
+    .header-icon {
+      color: var(--primary-color);
+      margin-right: 12px;
       font-size: 1.5rem;
-      font-weight: bold;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
+    
     .container {
-      max-width: 800px;
-      margin: auto;
-      padding: 1.5rem;
+      padding: 16px;
+      max-width: 640px;
+      margin: 0 auto;
     }
+    
     .card {
       background: white;
-      border-radius: 10px;
-      margin-bottom: 1.5rem;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      border-radius: var(--card-border-radius);
+      margin-bottom: 16px;
+      box-shadow: var(--card-shadow);
       overflow: hidden;
-      transition: 0.3s;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
+    
     .card:hover {
-      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      transform: translateY(-2px);
+      box-shadow: 0 2px 4px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
     }
-    .card img {
+    
+    .card-image {
       width: 100%;
-      display: block;
+      height: 200px;
+      object-fit: cover;
     }
+    
     .card-content {
-      padding: 1rem;
+      padding: 16px;
     }
+    
+    .card-source {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    
+    .source-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      margin-right: 8px;
+      background-color: #f1f3f4;
+    }
+    
+    .source-name {
+      font-size: 0.75rem;
+      color: #5f6368;
+      font-weight: 500;
+    }
+    
+    .card-time {
+      font-size: 0.75rem;
+      color: #5f6368;
+      margin-left: auto;
+    }
+    
     .card-title {
+      font-size: 1rem;
+      line-height: 1.5;
+      margin: 0 0 8px;
+      font-weight: 500;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    
+    .card-description {
+      font-size: 0.875rem;
+      color: #5f6368;
+      line-height: 1.5;
+      margin: 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    
+    .card-footer {
+      display: flex;
+      padding: 8px 16px;
+      border-top: 1px solid #f1f3f4;
+    }
+    
+    .footer-action {
+      display: flex;
+      align-items: center;
+      color: #5f6368;
+      font-size: 0.75rem;
+      margin-right: 16px;
+      cursor: pointer;
+    }
+    
+    .footer-icon {
+      margin-right: 6px;
       font-size: 1.1rem;
-      margin: 0 0 0.5rem;
-      font-weight: 600;
     }
-    .card-meta {
-      font-size: 0.85rem;
-      color: #888;
-      margin-bottom: 0.5rem;
-    }
-    .card a {
-      text-decoration: none;
-      color: inherit;
+    
+    @media (min-width: 600px) {
+      .container {
+        padding: 24px;
+      }
+      
+      .card {
+        margin-bottom: 24px;
+      }
     }
   </style>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-  <header>📰 Berita Otomatis</header>
+  <header>
+    <span class="material-icons header-icon">explore</span>
+    <span>Berita Untukmu</span>
+  </header>
+  
   <div class="container">
-    <!-- Konten berita akan diisi secara otomatis -->
+    <!-- Contoh kartu berita -->
+    <div class="card">
+      <img src="https://via.placeholder.com/600x400?text=Gambar+Berita" class="card-image" alt="Gambar Berita">
+      <div class="card-content">
+        <div class="card-source">
+          <div class="source-icon"></div>
+          <span class="source-name">Sumber Berita</span>
+          <span class="card-time">3 jam lalu</span>
+        </div>
+        <h3 class="card-title">Judul berita menarik yang akan ditampilkan di sini dengan maksimal dua baris</h3>
+        <p class="card-description">
+          Deskripsi singkat berita yang akan muncul di sini dengan maksimal tiga baris teks. Google Discover biasanya menampilkan cuplikan singkat dari konten artikel.
+        </p>
+      </div>
+      <div class="card-footer">
+        <div class="footer-action">
+          <span class="material-icons footer-icon">bookmark_border</span>
+          <span>Simpan</span>
+        </div>
+        <div class="footer-action">
+          <span class="material-icons footer-icon">more_vert</span>
+          <span>Lainnya</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Kartu tanpa gambar -->
+    <div class="card">
+      <div class="card-content">
+        <div class="card-source">
+          <div class="source-icon"></div>
+          <span class="source-name">Sumber Lain</span>
+          <span class="card-time">5 jam lalu</span>
+        </div>
+        <h3 class="card-title">Berita penting lainnya tanpa gambar thumbnail yang tetap menarik perhatian pembaca</h3>
+        <p class="card-description">
+          Konten berita alternatif yang mungkin tidak memiliki gambar tetapi tetap relevan untuk ditampilkan di feed berita Anda.
+        </p>
+      </div>
+      <div class="card-footer">
+        <div class="footer-action">
+          <span class="material-icons footer-icon">bookmark_border</span>
+          <span>Simpan</span>
+        </div>
+        <div class="footer-action">
+          <span class="material-icons footer-icon">more_vert</span>
+          <span>Lainnya</span>
+        </div>
+      </div>
+    </div>
   </div>
 </body>
 </html>

@@ -1,71 +1,91 @@
+# 🌐 Auto News Publisher - Google Discover Style
 
-# 📰 Auto News Crawler
+![Demo Screenshot](assets/screenshot.png)
 
-Sistem otomatis untuk mengambil berita terbaru dari RSS portal, rewrite menggunakan AI (DeepSeek / OpenAI), menyimpannya ke `berita.json`, dan menampilkan hasilnya di halaman web melalui GitHub Pages.
+🔍 **Sistem otomatis berita AI** dengan tampilan mirip Google Discover, mendukung:
+- Multi-sumber RSS/API
+- AI Rewrite (DeepSeek + OpenAI)
+- Auto-publish ke GitHub Pages
+- Optimasi SEO lengkap
 
----
+## 🚀 Fitur Utama
+| Fitur | Teknologi |
+|-------|-----------|
+| **Google Discover UI** | Responsive Card Layout • Material Icons • Dark Mode |
+| **AI Content Engine** | DeepSeek API • OpenAI GPT-3.5 • Fallback System |
+| **Automation** | GitHub Actions • Scheduled Updates • Auto-Deploy |
+| **SEO Optimized** | Sitemap.xml • OG Tags • Semantic HTML |
 
-## 🔧 Fitur
-
-- ✅ Ambil berita dari RSS Feed (contoh: BBC Indonesia)
-- ✅ Rewrite otomatis menggunakan:
-  - 🔹 DeepSeek AI (prioritas utama)
-  - 🔹 OpenAI GPT (fallback jika DeepSeek gagal)
-  - 🔹 Dummy rewrite (jika keduanya tidak aktif)
-- ✅ Simpan hasil ke:
-  - `berita.json` (semua artikel)
-  - `berita_rewrite.log` (log hasil rewrite)
-  - `preview_rewrite.html` (tampilan HTML hasil)
-- ✅ Auto-generate halaman `index.html` untuk GitHub Pages
-- ✅ Workflow GitHub Actions otomatis setiap jam
-
----
-
-## 🚀 Cara Pakai
-
-### 1. **Clone Repo**
+## 🛠️ Struktur File Terbaru
 ```bash
-git clone https://github.com/username/repo.git
+.
+├── berita/               # Artikel HTML (format terstruktur)
+│   └── YYYY-MM-DD/       # Organisasi per tanggal
+├── assets/               # Resource publik
+│   ├── styles.css        # CSS terpusat
+│   └── default-image.jpg # Fallback image
+├── scripts/
+│   ├── ai_rewriter.py    # Kecerdasan buatan
+│   └── generate_*.py     # Generator konten
+├── config.json           # Konfigurasi
+└── index.html            # Tampilan utama
+
+## ⚙️ Cara Setup
+1. **Clone Repo**
+   ```bash
+   git clone https://github.com/kimgebin/berita-otomatis.git
+   cd berita-otomatis
+   ```
+
+2. **Atur Secrets** (`Settings > Secrets > Actions`):
+   - `DEEPSEEK_API_KEY`
+   - `OPENAI_API_KEY` (opsional)
+
+3. **Konfigurasi** (`config.json`):
+   ```json
+   {
+     "rss_feeds": ["https://example.com/rss"],
+     "ui": {
+       "theme": "dark",
+       "max_articles": 20
+     }
+   }
+   ```
+
+## 🔄 Alur Kerja
+```mermaid
+graph TD
+    A[Fetch RSS] --> B[AI Rewrite]
+    B --> C[Generate HTML]
+    C --> D[Build Discover UI]
+    D --> E[Deploy to GitHub Pages]
 ```
 
-### 2. **Isi Secrets GitHub**
-Masukkan ke:
-`Settings → Secrets → Actions`
+## 📄 File Penting
+| File | Fungsi |
+|------|--------|
+| `sitemap.xml` | Auto-generate URL untuk SEO |
+| `robots.txt` | Kontrol crawler search engine |
+| `berita_rewrite.log` | Audit trail proses AI |
 
-- `DEEPSEEK_API_KEY` = `sk-...` (dari deepseek.com)
-- `OPENAI_API_KEY` = `sk-...` (opsional, dari OpenAI)
-
-### 3. **Deploy GitHub Pages**
-- Aktifkan Pages di `Settings → Pages`
-- Source = `main` branch → root
-- Hasil akan muncul di `https://username.github.io/repo/`
-
----
-
-## 📁 Struktur Output
-
-| File | Deskripsi |
-|------|-----------|
-| `berita.json` | Semua artikel yang sudah diambil & di-rewrite |
-| `preview_rewrite.html` | Tampilan HTML hasil rewrite |
-| `index.html` | Template tampilan utama |
-| `berita_rewrite.log` | Log setiap hasil rewrite |
-
----
-
-## 📅 Cron Schedule
-
-```yaml
-schedule:
-  - cron: '0 * * * *'  # Setiap jam (bisa ubah ke */15 untuk tiap 15 menit)
+📌 **Note**: Sistem akan otomatis berjalan setiap jam via GitHub Actions!
 ```
 
----
-
-## 🧠 Teknologi
-
-- Python 3.11
-- feedparser
-- requests
-- openai
-- GitHub Actions
+### 2. 📜 **sitemap.xml** (Auto-Generator Script)
+Add this to `generate_homepage.py`:
+```python
+def generate_sitemap(articles):
+    """Generate dynamic sitemap.xml"""
+    with open('sitemap.xml', 'w', encoding='utf-8') as f:
+        f.write('<?xml version="1.0" encoding="UTF-8"?>\n')
+        f.write('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n')
+        
+        # Main page
+        f.write('  <url>\n    <loc>https://kimgebin.github.io/berita-otomatis/</loc>\n    <changefreq>hourly</changefreq>\n  </url>\n')
+        
+        # Articles
+        for article in articles:
+            f.write(f'  <url>\n    <loc>https://kimgebin.github.io/berita-otomatis/{article["url"]}</loc>\n')
+            f.write(f'    <lastmod>{datetime.now().strftime("%Y-%m-%d")}</lastmod>\n  </url>\n')
+        
+        f.write('</urlset>')

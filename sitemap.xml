@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://kimgebin.github.io/berita-otomatis/</loc>
+    <loc>https://username.github.io/repo/</loc>
+    <lastmod>2024-05-20</lastmod>
     <changefreq>hourly</changefreq>
     <priority>1.0</priority>
   </url>
+  <!-- Auto-generated article URLs -->
+  {% for article in articles %}
+  <url>
+    <loc>https://username.github.io/repo/{{ article.url }}</loc>
+    <lastmod>{{ article.date }}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  {% endfor %}
 </urlset>

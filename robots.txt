@@ -1,4 +1,9 @@
 User-agent: *
-Allow: /
+Allow: /$
+Allow: /index.html
+Allow: /berita/*.html
+Disallow: /scripts/
+Disallow: /config.json
+Disallow: /*.log
 
 Sitemap: https://kimgebin.github.io/berita-otomatis/sitemap.xml
