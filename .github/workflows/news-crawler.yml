@@ -1,26 +1,38 @@
-
-name: Auto News Crawler
+name: Auto News Publisher
 
 on:
-  workflow_dispatch:
   schedule:
-    - cron: '*/15 * * * *'  # Jalankan setiap 15 menit
+    - cron: '0 * * * *'  # Hourly
+  workflow_dispatch:
 
 jobs:
-  run-bot:
+  publish:
     runs-on: ubuntu-latest
-
+    timeout-minutes: 30
+    
     steps:
-    - name: Checkout repo
-      uses: actions/checkout@v4
-
+    - uses: actions/checkout@v4
+    
     - name: Setup Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.11'  # FIX: downgrade dari 3.13 ke 3.11 agar modul cgi masih tersedia
-
+        python-version: '3.11'
+    
     - name: Install dependencies
-      run: pip install -r requirements.txt
-
-    - name: Run News Bot
-      run: python news_bot.py
+      run: |
+        pip install -r requirements.txt
+        sudo apt-get install -y libxml2-dev libxslt-dev
+        
+    - name: Run publishing pipeline
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_KEY }}
+        DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_KEY }}
+      run: |
+        python scripts/news_bot.py
+        python scripts/generate_homepage.py
+        
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./
