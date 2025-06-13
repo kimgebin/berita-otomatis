@@ -17,7 +17,7 @@ jobs:
     - name: Setup Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.x'
+        python-version: '3.11'  # FIX: downgrade dari 3.13 ke 3.11 agar modul cgi masih tersedia
 
     - name: Install dependencies
       run: pip install -r requirements.txt
