@@ -4,7 +4,7 @@ name: Auto News Crawler
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 * * * *'  # Jalankan setiap jam
+    - cron: '*/15 * * * *'  # Jalankan setiap 15 menit
 
 jobs:
   run-bot:
