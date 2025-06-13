@@ -39,7 +39,22 @@ def fetch_headline(site_name, url):
         print(f"Gagal fetch dari {site_name}: {e}")
         return None
 
-def generate_markdown(data, slug, today):
+def rewrite_dummy(text):
+    replacements = {
+        "Presiden": "Kepala Negara",
+        "mengunjungi": "datang ke",
+        "Pasar": "lokasi perdagangan",
+        "hari ini": "pada hari tersebut",
+        "bertemu": "melakukan pertemuan dengan",
+        "berkunjung": "melakukan kunjungan ke",
+        "resmi": "secara formal",
+        "warga": "masyarakat",
+    }
+    for old, new in replacements.items():
+        text = text.replace(old, new)
+    return text
+
+def generate_markdown(data, slug, today, rewritten_summary):
     md_template_path = "templates/artikel_template.md"
     with open(md_template_path, "r") as f:
         template = Template(f.read())
@@ -51,7 +66,7 @@ def generate_markdown(data, slug, today):
         url=data["url"],
         image_url="https://via.placeholder.com/1200x675?text=Berita+Otomatis",
         image_alt="Gambar Berita",
-        summary=f"Berikut adalah ringkasan berita dari {data['source'].capitalize()}."
+        summary=rewritten_summary
     )
 
     md_path = f"berita/{today}-{slug}.md"
@@ -59,7 +74,7 @@ def generate_markdown(data, slug, today):
         f.write(output)
     print(f"✅ Artikel markdown dibuat: {md_path}")
 
-def generate_html(data, slug, today):
+def generate_html(data, slug, today, rewritten_summary):
     html_template = f"""<!DOCTYPE html>
 <html lang="id">
 <head>
@@ -71,7 +86,7 @@ def generate_html(data, slug, today):
   <h1>{data['title']}</h1>
   <p><em>{today} · {data['source'].capitalize()}</em></p>
   <img src="https://via.placeholder.com/1200x675?text=Berita+Otomatis" alt="Gambar Berita" style="width:100%">
-  <p>Berikut adalah ringkasan berita dari {data['source'].capitalize()}.</p>
+  <p>{rewritten_summary}</p>
   <p><a href="{data['url']}" target="_blank">➡️ Baca selengkapnya</a></p>
 </body>
 </html>"""
@@ -89,5 +104,7 @@ if __name__ == "__main__":
         result = fetch_headline(name, url)
         if result:
             slug = result['title'].lower().replace(" ", "-")[:50]
-            generate_markdown(result, slug, today)
-            generate_html(result, slug, today)
+            raw_summary = f"Berikut adalah ringkasan berita dari {result['source'].capitalize()}."
+            rewritten = rewrite_dummy(raw_summary)
+            generate_markdown(result, slug, today, rewritten)
+            generate_html(result, slug, today, rewritten)
