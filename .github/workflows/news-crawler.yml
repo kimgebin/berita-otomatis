@@ -8,7 +8,6 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
     
     steps:
     - uses: actions/checkout@v4
@@ -21,9 +20,21 @@ jobs:
     - name: Install dependencies
       run: |
         pip install -r requirements.txt
-        sudo apt-get install -y libxml2-dev libxslt-dev
+        
+    # 🔽 ADD THIS NEW STEP HERE 🔽
+    - name: Validate Templates
+      id: check-templates
+      run: |
+        if [ ! -f "templates/base.html" ]; then
+          echo "::error::Missing template file: templates/base.html"
+          echo "template_exists=false" >> $GITHUB_OUTPUT
+          exit 1
+        else
+          echo "template_exists=true" >> $GITHUB_OUTPUT
+        fi
         
     - name: Run publishing pipeline
+      if: steps.check-templates.outputs.template_exists == 'true'
       env:
         OPENAI_API_KEY: ${{ secrets.OPENAI_KEY }}
         DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_KEY }}
@@ -32,14 +43,8 @@ jobs:
         python scripts/generate_homepage.py
         
     - name: Deploy to GitHub Pages
+      if: steps.check-templates.outputs.template_exists == 'true'
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./
-        
-    - name: Validate Templates
-      run: |
-    if [ ! -f "templates/base.html" ]; then
-      echo "::error::Missing template file!"
-      exit 1
-    fi
