@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
 from extract_image_url import extract_image_url
+from ai_rewriter import rewrite_article
 
 # Dummy example data (replace with real scraping logic)
 def get_articles():
@@ -22,8 +23,11 @@ def save_as_html(article):
     filename = f"{tanggal}-{article['slug']}.html"
     path = os.path.join(folder, filename)
 
-    # Ambil gambar
-    image_url = extract_image_url(article['link'])
+    # Rewrite isi artikel
+    rewritten = rewrite_article(article["content"])
+
+    # Ambil gambar dari artikel asli
+    image_url = extract_image_url(article["link"])
 
     html = f"""
     <!DOCTYPE html>
@@ -31,7 +35,7 @@ def save_as_html(article):
     <head>
         <meta charset="UTF-8">
         <title>{article['title']}</title>
-        <meta name="description" content="{article['content'][:150]}">
+        <meta name="description" content="{rewritten[:150]}">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {'<meta property="og:image" content="' + image_url + '">' if image_url else ''}
         <style>
@@ -53,7 +57,7 @@ def save_as_html(article):
     <body>
         <h1>{article['title']}</h1>
         {'<img src="' + image_url + '">' if image_url else ''}
-        <p>{article['content']}</p>
+        <p>{rewritten}</p>
         <hr>
         <small>Source: <a href="{article['link']}" target="_blank">{article['link']}</a></small>
     </body>
