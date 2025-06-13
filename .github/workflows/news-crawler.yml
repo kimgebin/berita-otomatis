@@ -1,8 +1,9 @@
 name: Auto News Crawler
 
 on:
+  workflow_dispatch:  # <-- wajib untuk bisa run manual
   schedule:
-    - cron: '0 */6 * * *'
+    - cron: '0 */6 * * *'  # Setiap 6 jam
 
 jobs:
   build:
