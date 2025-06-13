@@ -1,68 +1,96 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="google-site-verification" content="ulnFSXhoaipfRq-cac-qxv_cMSLIkKnFiv4Nm-Rlobg" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Berita Otomatis</title>
   <style>
     body {
-      font-family: sans-serif;
-      max-width: 700px;
+      font-family: 'Helvetica Neue', sans-serif;
+      margin: 0;
+      background: #f7f7f7;
+      color: #222;
+    }
+    header {
+      background: #ffffff;
+      padding: 1rem 1.5rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .container {
+      max-width: 800px;
       margin: auto;
-      padding: 2em;
+      padding: 1.5rem;
     }
-    h1 {
-      color: #333;
-      text-align: center;
+    .card {
+      background: white;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      overflow: hidden;
+      transition: 0.3s;
     }
-    ul {
-      list-style-type: none;
-      padding: 0;
+    .card:hover {
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
     }
-    li {
-      background: #f9f9f9;
-      margin: 0.5em 0;
-      padding: 1em;
-      border-radius: 5px;
+    .card img {
+      width: 100%;
+      display: block;
     }
-    a {
+    .card-content {
+      padding: 1rem;
+    }
+    .card-title {
+      font-size: 1.1rem;
+      margin: 0 0 0.5rem;
+      font-weight: 600;
+    }
+    .card-meta {
+      font-size: 0.85rem;
+      color: #888;
+      margin-bottom: 0.5rem;
+    }
+    .card a {
       text-decoration: none;
-      color: #0366d6;
-    }
-    a:hover {
-      text-decoration: underline;
+      color: inherit;
     }
   </style>
 </head>
 <body>
-  <h1>📰 Daftar Berita Otomatis</h1>
-  <p>Berikut adalah artikel yang diposting secara otomatis:</p>
-  <ul id="list-berita"></ul>
-
-  <script>
-    async function fetchFileList() {
-      const res = await fetch('./berita/');
-      const text = await res.text();
-      const parser = new DOMParser();
-      const html = parser.parseFromString(text, 'text/html');
-      const links = html.querySelectorAll('a');
-
-      const list = document.getElementById('list-berita');
-      links.forEach(link => {
-        const href = link.getAttribute('href');
-        if (href.endsWith('.md')) {
-          const li = document.createElement('li');
-          const a = document.createElement('a');
-          a.href = './berita/' + href;
-          a.textContent = href.replace('.md', '').replace(/[-_]/g, ' ');
-          li.appendChild(a);
-          list.appendChild(li);
-        }
-      });
-    }
-
-    fetchFileList();
-  </script>
+  <header>📰 Berita Otomatis</header>
+  <div class="container">
+    <!-- Artikel Dummy -->
+    <div class="card">
+      <a href="berita/2025-06-13-berita-terbaru-detikcom.html">
+        <img src="https://via.placeholder.com/800x400?text=Berita+1" alt="Gambar Berita">
+        <div class="card-content">
+          <div class="card-title">Berita Terbaru dan Terpercaya Hari Ini</div>
+          <div class="card-meta">Detikcom · 13 Juni 2025</div>
+          <div>Ringkasan berita otomatis akan tampil di sini...</div>
+        </div>
+      </a>
+    </div>
+    <div class="card">
+      <a href="berita/2025-06-13-fadli-zon-minta-maaf.html">
+        <img src="https://via.placeholder.com/800x400?text=Berita+2" alt="Gambar Berita">
+        <div class="card-content">
+          <div class="card-title">Fadli Zon Minta Maaf Karena Sebut Tak Ada Masalah</div>
+          <div class="card-meta">Kompas · 13 Juni 2025</div>
+          <div>Ringkasan berita otomatis akan tampil di sini...</div>
+        </div>
+      </a>
+    </div>
+    <div class="card">
+      <a href="berita/2025-06-13-film-jumbo-riefky.html">
+        <img src="https://via.placeholder.com/800x400?text=Berita+3" alt="Gambar Berita">
+        <div class="card-content">
+          <div class="card-title">Film Jumbo Riefky Segera Tayang</div>
+          <div class="card-meta">CNN Indonesia · 13 Juni 2025</div>
+          <div>Ringkasan berita otomatis akan tampil di sini...</div>
+        </div>
+      </a>
+    </div>
+  </div>
 </body>
 </html>
