@@ -46,6 +46,15 @@ def generate_homepage():
                 article = extract_article_data(os.path.join(root, file))
                 if article:
                     articles.append(article)
+
+    # Modify Template
+    def load_template():
+    try:
+        with open('templates/base.html', 'r', encoding='utf-8') as f:
+            return f.read()
+    except FileNotFoundError:
+        print("Warning: Using fallback template")
+        return """<!DOCTYPE html><html><body><!-- CONTENT_PLACEHOLDER --></body></html>"""
     
     # Generate HTML cards
     cards = []
