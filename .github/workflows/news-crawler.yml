@@ -36,3 +36,10 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./
+        
+    - name: Validate Templates
+      run: |
+    if [ ! -f "templates/base.html" ]; then
+      echo "::error::Missing template file!"
+      exit 1
+    fi
