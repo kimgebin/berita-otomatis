@@ -3,3 +3,4 @@ beautifulsoup4
 python-dotenv
 Jinja2
 newspaper3k
+openai
