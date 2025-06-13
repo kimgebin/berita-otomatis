@@ -1,6 +1,7 @@
 requests
 beautifulsoup4
-python-dotenv
 Jinja2
 newspaper3k
-openai
+feedparser==6.0.10
+openai>=1.0.0
+python-dotenv>=1.0.0
