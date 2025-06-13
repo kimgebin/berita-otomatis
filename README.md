@@ -16,6 +16,7 @@ Sistem ini secara otomatis mengambil berita dari berbagai sumber (Detik, Kompas,
 - GitHub Actions
 - BeautifulSoup / Newspaper3k
 - Optional: OpenAI API (untuk rewrite)
+- Optional: DeepSeek API (untuk rewrite)
 
 ## 📁 Struktur Direktori
 
