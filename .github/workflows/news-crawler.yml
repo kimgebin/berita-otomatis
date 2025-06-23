@@ -1,50 +1,16 @@
-name: Auto News Publisher
+name: Auto News Crawler
 
 on:
   schedule:
-    - cron: '0 * * * *'  # Hourly
+    - cron: "0 */3 * * *"  # Setiap 3 jam
   workflow_dispatch:
 
 jobs:
-  publish:
+  run-crawler:
     runs-on: ubuntu-latest
-    
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Setup Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
-    
-    - name: Install dependencies
-      run: |
-        pip install -r requirements.txt
-        
-    # 🔽 ADD THIS NEW STEP HERE 🔽
-    - name: Validate Templates
-      id: check-templates
-      run: |
-        if [ ! -f "templates/base.html" ]; then
-          echo "::error::Missing template file: templates/base.html"
-          echo "template_exists=false" >> $GITHUB_OUTPUT
-          exit 1
-        else
-          echo "template_exists=true" >> $GITHUB_OUTPUT
-        fi
-        
-    - name: Run publishing pipeline
-      if: steps.check-templates.outputs.template_exists == 'true'
-      env:
-        OPENAI_API_KEY: ${{ secrets.OPENAI_KEY }}
-        DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_KEY }}
-      run: |
-        python scripts/news_bot.py
-        python scripts/generate_homepage.py
-        
-    - name: Deploy to GitHub Pages
-      if: steps.check-templates.outputs.template_exists == 'true'
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run crawler
+        run: python news_bot.py
