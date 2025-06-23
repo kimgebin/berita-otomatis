@@ -46,3 +46,40 @@ def save_article(article):
     
     with open(f"berita/{date_dir}/{generate_slug(article['title'])}.html", 'w', encoding='utf-8') as f:
         f.write(html)
+
+if __name__ == "__main__":
+    main()
+
+
+
+def render_html(berita_list):
+    from markdown2 import markdown
+    html_articles = ""
+    for berita in berita_list:
+        title = berita.get("judul", "Tanpa Judul")
+        content = markdown(berita.get("isi", ""))
+        published = berita.get("published", "")
+        html_articles += f"<article><h2>{title}</h2><time>{published}</time>{content}</article>\n"
+
+    html_template = """<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Berita Otomatis</title>
+    <style>
+        body {{ font-family: sans-serif; max-width: 800px; margin: auto; padding: 20px; }}
+        article {{ margin-bottom: 40px; }}
+        h2 {{ color: #333; }}
+        time {{ color: gray; font-size: 0.9em; }}
+    </style>
+</head>
+<body>
+    <h1>Berita Otomatis</h1>
+    {{articles}}
+</body>
+</html>"""
+    html_output = html_template.replace("{{articles}}", html_articles)
+
+    with open("index.html", "w", encoding="utf-8") as f:
+        f.write(html_output)
